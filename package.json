@@ -1,6 +1,6 @@
 {
-  "name": "graphic-ttemplate",
-  "homepage": "https://vs-postmedia.github.io/graphic-template/",
+  "name": "active-covid19-cases",
+  "homepage": "https://vs-postmedia.github.io/covid-active-cases/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

@@ -10,18 +10,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 
 
-// Tweak this to match your GitHub project name
-const publicPath = 'covid-active-cases/';
 // process.cwd will return a path to our active project directory
 const ROOT_DIR = process.cwd();
-
-
-const paths = {
-  src: path.join(__dirname, 'src'),
-  dist: path.join(__dirname, 'dist'),
-  data: path.join(__dirname, 'data')
-}
-
 
 
 module.exports = {
@@ -34,9 +24,9 @@ module.exports = {
 		path: path.resolve(ROOT_DIR, 'dist'),
 		// add hashing for better caching
 		filename: '[name].[contenthash:8].bundle.js',
-		chunkFilename: '[name].[contenthash:8].chunk.js'
-		// Tweak this to match your GitHub project name
-      	// publicPath: publicPath
+		chunkFilename: '[name].[contenthash:8].chunk.js',
+		// for gh-pages – 
+      	publicPath: './'
 	},
 	module: {
 		rules: [
