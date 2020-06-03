@@ -1,0 +1,33 @@
+#app {
+	height: 450px;
+	margin: 0.25rem;
+}
+
+#app .label {
+	fill: #fff;
+	font-family: 'BentonSansCond-Regular';
+	font-size: 0.9rem;
+	text-transform: capitalize;
+}
+
+#app .tick text {
+	font-size: 0.9rem;
+	font-family: 'BentonSansCond-Regular';
+}
+
+#app .tick line,
+#app .gridline .tick line {
+	stroke: var(--grey04);
+}
+
+#app footer {
+	margin-top: 10px;
+}
+
+
+@media screen and (min-width: 450px) {
+	#app {
+		height: 500px;
+		margin: 0.25rem 1rem;
+	}
+}
