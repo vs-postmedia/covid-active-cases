@@ -4,8 +4,8 @@ import css from './area-chart.css';
 
 
 // THE GOOD STUFF
-const yScaleMetric = 'cumulative_recovered'; // cumulative_cases
-let configCache, dataCache, id, height, width, x, y;
+// const yScaleMetric = 'active_cases'; // cumulative_cases, cumulative_recovered, active_cases
+let configCache, dataCache, id, height, width, x, y, yScaleMetric;
 const yTicks = 5;
 const opacity = 0.5;
 const margin = {
@@ -69,6 +69,12 @@ const drawData = (svg, metric, i, data, config) => {
 		)
 };
 
+const parseDate = (data) => {
+	return data.map(d => {
+		d.date = d3.timeParse('%d-%m-%Y')(d.date_active);
+	});
+};
+
 const setupFooter = (config) => {
 	const footer = d3.select(config.id)
 		.append('footer');
@@ -106,14 +112,18 @@ const setupHeader = (config, data) => {
 		.append('p')
 		.attr('class', 'subhead')
 		.html(subhead);
+};
+
+const setYScaleMetric = data => {
+	const cases = data[data.length - 1].active_cases;
+	const recovered = data[data.length - 1].cumulative_recovered;
+
+	return recovered > cases ? 'cumulative_recovered' : 'active_cases';
 }
 
 const ySetup = (data) => {
 	return d3.scaleLinear()
-		.domain([0, d3.max(data, d => {
-			// console.log(d)
-			return parseInt(d[yScaleMetric])
-		})]).nice()
+		.domain([0, d3.max(data, d => parseInt(d[yScaleMetric]))]).nice()
 		.range([height - margin.bottom, margin.top])
 };
 
@@ -131,7 +141,7 @@ const xAxis = g => {
 			.tickSizeOuter(0)
 			.tickFormat(d3.utcFormat('%b'))
 		)
-}
+};
 
 const yAxis = g => {
 	g.attr("transform", `translate(${margin.left},0)`)
@@ -140,7 +150,7 @@ const yAxis = g => {
 		    	.ticks(yTicks)
 		    )
 		    .call(g => g.select(".domain").remove()); // removed the line
-}
+};
 
 const yAxisGridlines = g => {
 	g.attr("transform", `translate(${margin.left},0)`)
@@ -151,19 +161,21 @@ const yAxisGridlines = g => {
 				.tickFormat('')
 		    )
 		    .call(g => g.select(".domain").remove()); // removed the line
-}
+};
 
 const init = async (data, config) => {
 	// setup
 	id = config.id;
 	dataCache = data;
 	configCache = config;
+	// sometimes actives_cases are higher than recovered. Set the yScale metric on the fly
+	yScaleMetric = setYScaleMetric(data);
 
 	// convert dates into something useful
 	await parseDate(data);
 	
 	updateChart(data, config);
-}
+};
 
 const updateChart = (data, config) => {
 	// headline & deck
@@ -192,6 +204,7 @@ const updateChart = (data, config) => {
 	svg.append('g')
 		.call(yAxisGridlines)
 
+	// draw data area 
 	config.chart_variables.forEach((metric,i) => {
 		drawData(svg, metric, i, data, config);
 	});
@@ -199,14 +212,10 @@ const updateChart = (data, config) => {
 	// add labels
 	addLabels(svg, configCache, data);
 
+	// don't forget the footer!
 	setupFooter(configCache);
 };
 
-function parseDate(data) {
-	return data.map(d => {
-		d.date = d3.timeParse('%d-%m-%Y')(d.date_active);
-	});
-}
 
 window.addEventListener('resize', () => {
 	const el = document.getElementById(id.replace('#', ''));
