@@ -4,6 +4,7 @@ import css from './area-chart.css';
 
 
 // THE GOOD STUFF
+const yScaleMetric = 'cumulative_recovered'; // cumulative_cases
 let configCache, dataCache, id, height, width, x, y;
 const yTicks = 5;
 const opacity = 0.5;
@@ -11,30 +12,40 @@ const margin = {
 	top: 10,
 	right: 20,
 	bottom: 25,
-	left: 50
+	left: 55
 };
 
-const addLabels = (svg, config) => {
+const addLabels = (svg, config, data) => {
 	config.chart_variables.forEach(d => {
-		let yOffset = 0.91;
-		let xOffset = 0.65;
+		// not every province had deaths
+		if (data[data.length - 1].cumulative_deaths < 1 && d === 'cumulative_deaths') {
+			return;
+		}
+		
+		// get the bounding box for the area charts to position the labels 
+		const bbox = d3.select(`.${d} path`).node().getBBox();
+		let xPos = width * 0.925;
+		let yPos = height - (bbox.height / 1.75);
+
 		const label = d.replace('cumulative_', '').replace('_cases', '');
 
-		if (label === 'recovered') {
-			yOffset = 0.6;
-			xOffset = 0.7
-		} else if (label === 'active') {
-			yOffset = 0.8;
+		// magical repositioning so the labels fit somewhat well...
+		if (label === 'active') {
+			xPos = width - (bbox.width / 2.75);
+			yPos = height * 0.875;
 		} else if (label === 'deaths') {
-			xOffset = 0.8;
+			xPos = width * 0.925;
+			yPos = height * 0.9;
 		}
 
+		// place the text
 		svg.append('text')
 			.text(label)
 			.attr('class', `${label} label`)
-			.attr('x', width * xOffset)
-			.attr('y', height * yOffset)
-	})
+			.attr('text-anchor', 'end')
+			.attr('x', xPos)
+			.attr('y', yPos)
+	});
 };
 
 const drawData = (svg, metric, i, data, config) => {
@@ -46,7 +57,7 @@ const drawData = (svg, metric, i, data, config) => {
 
 	// draw area charts
 	svg.append('g')
-		.attr('class', 'area')	
+		.attr('class', `area ${metric}`)	
 		.append('path')
 		.datum(variable)
 		.attr('fill', config.fill_colours[i])
@@ -68,7 +79,6 @@ const setupFooter = (config) => {
 			.attr('href', config.source_url)
 			.attr('target', '_blank')
 		.text(config.source_text);
-
 };
 
 const setupHeader = (config, data) => {
@@ -90,12 +100,15 @@ const setupHeader = (config, data) => {
 	d3.select(`${config.id} header`)
 		.append('p')
 		.attr('class', 'subhead')
-		.text(subhead);
+		.html(subhead);
 }
 
 const ySetup = (data) => {
 	return d3.scaleLinear()
-		.domain([0, d3.max(data, d => parseInt(d.cumulative_recovered))]).nice()
+		.domain([0, d3.max(data, d => {
+			// console.log(d)
+			return parseInt(d[yScaleMetric])
+		})]).nice()
 		.range([height - margin.bottom, margin.top])
 };
 
@@ -178,7 +191,8 @@ const updateChart = (data, config) => {
 		drawData(svg, metric, i, data, config);
 	});
 
-	addLabels(svg, configCache);
+	// add labels
+	addLabels(svg, configCache, data);
 
 	setupFooter(configCache);
 };

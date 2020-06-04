@@ -3,6 +3,19 @@
 	margin: 0.25rem;
 }
 
+#app .subhead .active {
+	color: var(--blue01);
+	font-family: BentonSansCond-Bold;
+}
+#app .subhead .recovered {
+	color: var(--green01);
+	font-family: BentonSansCond-Bold;
+}
+#app .subhead .deaths {
+	color: var(--black);
+	font-family: BentonSansCond-Bold;
+}
+
 #app .label {
 	fill: #fff;
 	font-family: 'BentonSansCond-Regular';

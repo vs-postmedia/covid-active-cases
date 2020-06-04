@@ -1,4 +1,6 @@
 # graphics-temlate
-Basic template to bootstrap interactive graphics. Includes d3. Made with Webpack & node.
+Active & recovered cases, deaths from covid19. Data from Covid19 Canada working group.
 
+Add `?prov=[PROVCODE]` to URL to select a province. 
 
+<iframe src="https://vs-postmedia.github.io/covid-active-cases/?prov=bc" frameborder="0"height="450" scrolling="no" style="height:475px;width:100%"></iframe>

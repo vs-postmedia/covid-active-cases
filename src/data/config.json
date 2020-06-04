@@ -1,7 +1,7 @@
 {
 	"id": "#app",
 	"headline": "Recoveries, deaths and active cases of COVID-19",
-	"subhead": "Active cases of COVID-19 in PROV, as well as recoveries and deaths from the virus. Data is current as of ",
+	"subhead": "<span class='active'>Active cases</span> of COVID-19 in PROV, as well as <span class='recovered'>recoveries</span> and <span class='deaths'>deaths</span> from the virus. Data is current as of ",
 	"source_text": "COVID-19 Canada Open Data Working Group",
 	"source_url": "https://github.com/ishaberry/Covid19Canada",
 	"chart_variables": [
