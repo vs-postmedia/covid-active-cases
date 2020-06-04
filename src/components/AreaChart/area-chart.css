@@ -1,5 +1,5 @@
 #app {
-	height: 450px;
+	height: 475px;
 	margin: 0.25rem;
 }
 
@@ -40,7 +40,7 @@
 
 @media screen and (min-width: 450px) {
 	#app {
-		height: 500px;
+		height: 475px;
 		margin: 0.25rem 1rem;
 	}
 }

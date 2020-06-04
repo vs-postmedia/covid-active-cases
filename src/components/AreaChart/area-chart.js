@@ -60,13 +60,27 @@ const drawData = (svg, metric, i, data, config) => {
 		.attr('class', `area ${metric}`)	
 		.append('path')
 		.datum(variable)
+		.attr('stroke', config.fill_colours[i])
+		.attr('stroke-width', 2)
+		.attr('opacity', 1)
 		.attr('fill', config.fill_colours[i])
 		.attr('opacity', opacity)
 		.attr('d', d3.area()
 			.x(d => x(d.date))
 			.y0(y(0))
 			.y1(d => y(d.value))
-		)
+		);
+
+	// outline the areas
+	svg.append('path')
+		.datum(variable)
+		.attr('fill', 'none')
+		.attr('stroke', config.fill_colours[i])
+		.attr('stroke-width', 2)
+		.attr('d', d3.line()
+			.x(d => x(d.date))
+			.y(d => y(d.value))
+		);
 };
 
 const parseDate = (data) => {

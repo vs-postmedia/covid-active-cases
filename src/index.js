@@ -5,7 +5,7 @@ import fonts from './css/fonts.css';
 import css from './css/main.css';
 
 // JS
-const axios = require('axios');
+import axios from 'axios';
 import config from './data/config.json';
 import * as AreaChart from './components/AreaChart/area-chart.js';
 
