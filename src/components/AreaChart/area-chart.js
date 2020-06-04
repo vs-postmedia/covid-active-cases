@@ -115,8 +115,8 @@ const setupHeader = (config, data) => {
 };
 
 const setYScaleMetric = data => {
-	const cases = data[data.length - 1].active_cases;
-	const recovered = data[data.length - 1].cumulative_recovered;
+	const cases = parseInt(data[data.length - 1].active_cases);
+	const recovered = parseInt(data[data.length - 1].cumulative_recovered);
 
 	return recovered > cases ? 'cumulative_recovered' : 'active_cases';
 }
