@@ -70,15 +70,20 @@ const drawData = (svg, metric, i, data, config) => {
 };
 
 const setupFooter = (config) => {
-	d3.select(config.id)
-		.append('footer')
-		.append('p')
+	const footer = d3.select(config.id)
+		.append('footer');
+	
+	footer.append('p')
 			.attr('class', 'source')
 			.text('SOURCE: ')
 			.append('a')
 			.attr('href', config.source_url)
 			.attr('target', '_blank')
 		.text(config.source_text);
+
+	footer.append('p')
+			.attr('class', 'credit')
+			.text(config.credit);
 };
 
 const setupHeader = (config, data) => {

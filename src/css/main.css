@@ -39,10 +39,23 @@
 	margin: 0;
 }
 
+#app footer {
+	display: flex;
+}
+
+#app footer > p {
+	flex: 1;
+}
+
 #app .note,
-#app .source {
+#app .source,
+#app .credit {
 	color: var(--grey02);
 	font-size: 0.8rem;
+}
+
+#app .credit {
+	text-align: right;
 }
 
 #app .source a {

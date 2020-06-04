@@ -3,15 +3,15 @@
 	margin: 0.25rem;
 }
 
-#app .subhead .active {
+#app .active {
 	color: var(--blue01);
 	font-family: BentonSansCond-Bold;
 }
-#app .subhead .recovered {
+#app .recovered {
 	color: var(--green01);
 	font-family: BentonSansCond-Bold;
 }
-#app .subhead .deaths {
+#app .deaths {
 	color: var(--black);
 	font-family: BentonSansCond-Bold;
 }
