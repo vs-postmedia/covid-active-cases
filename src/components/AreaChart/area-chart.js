@@ -111,9 +111,9 @@ const setupHeader = (config, data) => {
 	let subhead = config.subhead.replace('PROV', data[0].province);
 
 	const d = config.timestamp.split(' ')[0].split('-');
-	const date = new Date(d[0], d[1], d[2]);
-	// const date = new Date(config.timestamp.split(' ')[0].split('-'));
+	const date = new Date(d[0], d[1] - 1, d[2]);
 	const dateString = ` ${date.toLocaleString('default', { month: 'long' })} ${date.getDay()}, ${date.getFullYear()}.`
+	// const dateString = ` ${date.toLocaleString('default', { month: 'long' })} ${date.getDay()}, ${date.getFullYear()}.`
 
 	// add timestamp to deck
 	subhead += dateString;
