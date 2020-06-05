@@ -110,7 +110,9 @@ const setupHeader = (config, data) => {
 	// inset province name into deck
 	let subhead = config.subhead.replace('PROV', data[0].province);
 
-	const date = new Date(config.timestamp.split(' ')[0].split('-'));
+	const d = config.timestamp.split(' ')[0].split('-');
+	const date = new Date(d[0], d[1], d[2]);
+	// const date = new Date(config.timestamp.split(' ')[0].split('-'));
 	const dateString = ` ${date.toLocaleString('default', { month: 'long' })} ${date.getDay()}, ${date.getFullYear()}.`
 
 	// add timestamp to deck
