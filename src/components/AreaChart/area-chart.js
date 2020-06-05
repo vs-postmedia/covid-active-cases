@@ -32,7 +32,7 @@ const addLabels = (svg, config, data) => {
 		// magical repositioning so the labels fit somewhat well...
 		if (label === 'active') {
 			xPos = width - (bbox.width / 2.75);
-			yPos = height * 0.875;
+			yPos = height * 0.85;
 		} else if (label === 'deaths') {
 			xPos = width * 0.925;
 			yPos = height * 0.9;
@@ -198,14 +198,12 @@ const updateChart = (data, config) => {
 	setupHeader(config, data);
 
 	// set height & width
-	height = d3.select(id).style('height').slice(0, -2) / 1.5 - margin.top - margin.bottom;
+	height = d3.select(id).style('height').slice(0, -2) / 1.6 - margin.top - margin.bottom;
 	width = d3.select(id).style('width').slice(0, -2);
 	// svg
 	const svg = d3.select(id)
 		.append('svg')
 		.attr('viewBox', [0, 0, width, height]);
-		// .attr('width', width + margin.left + margin.right)
-		// .attr('height', height + margin.top + margin.bottom);
 
 	// Add axes
 	x = xSetup(data);
