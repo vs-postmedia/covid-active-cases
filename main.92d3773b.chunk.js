@@ -168,7 +168,7 @@ var area_chart_setupHeader = function setupHeader(config, data) {
   // inset province name into deck
   var subhead = config.subhead.replace('PROV', data[0].province);
   var d = config.timestamp.split(' ')[0].split('-');
-  var date = new Date(d[0], d[1], d[2]); // const date = new Date(config.timestamp.split(' ')[0].split('-'));
+  var date = new Date(d[0], d[1] - 1, d[2]); // const date = new Date(config.timestamp.split(' ')[0].split('-'));
 
   var dateString = " ".concat(date.toLocaleString('default', {
     month: 'long'
