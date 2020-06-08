@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+	import * as d3 from 'd3';
 import css from './area-chart.css';
 
 
@@ -112,8 +112,7 @@ const setupHeader = (config, data) => {
 
 	const d = config.timestamp.split(' ')[0].split('-');
 	const date = new Date(d[0], d[1] - 1, d[2]);
-	const dateString = ` ${date.toLocaleString('default', { month: 'long' })} ${date.getDay()}, ${date.getFullYear()}.`
-	// const dateString = ` ${date.toLocaleString('default', { month: 'long' })} ${date.getDay()}, ${date.getFullYear()}.`
+	const dateString = ` ${date.toLocaleString('default', { month: 'long' })} ${d[2]}, ${date.getFullYear()}.`
 
 	// add timestamp to deck
 	subhead += dateString;
