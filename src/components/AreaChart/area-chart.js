@@ -16,6 +16,7 @@ const margin = {
 };
 
 const addLabels = (svg, config, data) => {
+	console.log(config)
 	config.chart_variables.forEach(d => {
 		// not every province had deaths
 		if (data[data.length - 1].cumulative_deaths < 1 && d === 'cumulative_deaths') {
@@ -30,9 +31,12 @@ const addLabels = (svg, config, data) => {
 		const label = d.replace('cumulative_', '').replace('_cases', '');
 
 		// magical repositioning so the labels fit somewhat well...
-		if (label === 'active') {
-			xPos = width - (bbox.width / 2.75);
-			yPos = height * 0.85;
+		if (config.province === 'Quebec' && label === 'active') {
+			xPos = width - (bbox.width / 2.25);
+			yPos = height * 0.6;
+		} else if (label === 'active') {
+			xPos = width - (bbox.width / 2.25);
+			yPos = height * 0.825;
 		} else if (label === 'deaths') {
 			xPos = width * 0.925;
 			yPos = height * 0.9;
@@ -199,6 +203,7 @@ const updateChart = (data, config) => {
 	// set height & width
 	height = d3.select(id).style('height').slice(0, -2) / 1.6 - margin.top - margin.bottom;
 	width = d3.select(id).style('width').slice(0, -2);
+	
 	// svg
 	const svg = d3.select(id)
 		.append('svg')
