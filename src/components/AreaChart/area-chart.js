@@ -16,7 +16,6 @@ const margin = {
 };
 
 const addLabels = (svg, config, data) => {
-	console.log(config)
 	config.chart_variables.forEach(d => {
 		// not every province had deaths
 		if (data[data.length - 1].cumulative_deaths < 1 && d === 'cumulative_deaths') {
