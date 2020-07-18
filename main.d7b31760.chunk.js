@@ -107,7 +107,6 @@ var margin = {
 };
 
 var area_chart_addLabels = function addLabels(svg, config, data) {
-  console.log(config);
   config.chart_variables.forEach(function (d) {
     // not every province had deaths
     if (data[data.length - 1].cumulative_deaths < 1 && d === 'cumulative_deaths') {
@@ -301,11 +300,10 @@ window.addEventListener('resize', function () {
 
  // VARS
 
-var dataUrl;
 var defaultPrCode = 'BC';
 var queryString = window.location.search;
 var urlParams = new URLSearchParams(queryString);
-var boxUrl = 'https://app.box.com/s/jbcowpxlvrd59b5jos3715040ikqk1n4';
+var dataUrl = 'https://vs-postmedia-data.sfo2.digitaloceanspaces.com/covid-active-cases.json';
 
 var src_init = /*#__PURE__*/function () {
   var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
@@ -318,43 +316,43 @@ var src_init = /*#__PURE__*/function () {
             prCode = getPrCode(); // production
 
             if (urlParams.get('dev')) {
-              _context.next = 10;
+              _context.next = 9;
               break;
             }
 
-            dataUrl = boxUrl; // fetch & prep data
+            _context.next = 4;
+            return axios_default.a.get(dataUrl, {
+              crossdomain: true
+            });
 
-            _context.next = 5;
-            return axios_default.a.get(dataUrl);
-
-          case 5:
+          case 4:
             resp = _context.sent;
             data = resp.data.results.filter(function (d) {
               return d.prov_code === prCode;
             });
-            data_config.timestamp = resp.data.timestamp; // local dev (since i struggled to get localhost past CORS)
+            data_config.timestamp = resp.data.timestamp; // local dev 
 
-            _context.next = 15;
+            _context.next = 14;
             break;
 
-          case 10:
-            _context.next = 12;
+          case 9:
+            _context.next = 11;
             return __webpack_require__(98);
 
-          case 12:
+          case 11:
             allData = _context.sent;
             data = allData.results.filter(function (d) {
               return d.prov_code === prCode;
             });
             data_config.timestamp = allData.timestamp;
 
-          case 15:
+          case 14:
             // pass provinceName into config
             data_config.province = data[0].province; // draw the chart
 
             init(data, data_config);
 
-          case 17:
+          case 16:
           case "end":
             return _context.stop();
         }
