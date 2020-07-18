@@ -17,7 +17,8 @@
     "@babel/runtime": "^7.10.2",
     "axios": "^0.19.2",
     "d3": "^5.15.0",
-    "d3-svg-annotation": "^2.5.1"
+    "d3-svg-annotation": "^2.5.1",
+    "digitalocean-spaces": "0.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

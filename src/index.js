@@ -10,11 +10,10 @@ import config from './data/config.json';
 import * as AreaChart from './components/AreaChart/area-chart.js';
 
 // VARS
-let dataUrl;
 const defaultPrCode = 'BC';
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const boxUrl = 'https://app.box.com/s/jbcowpxlvrd59b5jos3715040ikqk1n4';
+let dataUrl = 'https://vs-postmedia-data.sfo2.digitaloceanspaces.com/covid-active-cases.json';
 
 const init = async () => {
 	let data;
@@ -23,12 +22,11 @@ const init = async () => {
 
 	// production
 	if (!urlParams.get('dev')) {
-		dataUrl = boxUrl;
 		// fetch & prep data
-		const resp = await axios.get(dataUrl);
+		const resp = await axios.get(dataUrl, { crossdomain: true });
 		data = resp.data.results.filter(d => d.prov_code === prCode);
 		config.timestamp = resp.data.timestamp;
-	// local dev (since i struggled to get localhost past CORS)
+	// local dev 
 	} else {
 		const allData = await require('../config/local-test-data.json');
 		data = allData.results.filter(d => d.prov_code === prCode);
