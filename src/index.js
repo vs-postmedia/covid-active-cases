@@ -24,7 +24,12 @@ const init = async () => {
 	if (!urlParams.get('dev')) {
 		// fetch & prep data
 		const resp = await axios.get(dataUrl, { crossdomain: true });
-		data = resp.data.results.filter(d => d.prov_code === prCode);
+		data = resp.data.results
+			.filter(d => d.prov_code === prCode)
+			.filter(d => {
+				const date = d.date_active.split('-');
+				return Date.parse(`${date[2]}-${date[1]}-${date[0]}`) > Date.parse('2020-03-01');
+			});
 		config.timestamp = resp.data.timestamp;
 	// local dev 
 	} else {

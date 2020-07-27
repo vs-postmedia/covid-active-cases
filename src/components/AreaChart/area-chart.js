@@ -34,7 +34,7 @@ const addLabels = (svg, config, data) => {
 			xPos = width - (bbox.width / 2.25);
 			yPos = height * 0.6;
 		} else if (label === 'active') {
-			xPos = width - (bbox.width / 2.25);
+			xPos = width - (bbox.width / 1.6);
 			yPos = height * 0.825;
 		} else if (label === 'deaths') {
 			xPos = width * 0.925;
@@ -50,6 +50,13 @@ const addLabels = (svg, config, data) => {
 			.attr('y', yPos)
 	});
 };
+
+const areaGenerator = (data, x) => {
+	return d3.area() 
+		.x(d => x(d.date))
+		.y0(y(0))
+		.y1(d => y(d.value))
+}
 
 const drawData = (svg, metric, i, data, config) => {
 	// prep variables for d3.area
@@ -68,11 +75,12 @@ const drawData = (svg, metric, i, data, config) => {
 		.attr('opacity', 1)
 		.attr('fill', config.fill_colours[i])
 		.attr('opacity', opacity)
-		.attr('d', d3.area()
-			.x(d => x(d.date))
-			.y0(y(0))
-			.y1(d => y(d.value))
-		);
+		// .attr('d', d3.area()
+		// 	.x(d => x(d.date))
+		// 	.y0(y(0))
+		// 	.y1(d => y(d.value))
+		// );
+		.attr('d', areaGenerator(variable, x));
 
 	// outline the areas
 	svg.append('path')
