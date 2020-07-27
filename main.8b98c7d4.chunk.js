@@ -96,7 +96,7 @@ var area_chart = __webpack_require__(97);
  // THE GOOD STUFF
 // const yScaleMetric = 'active_cases'; // cumulative_cases, cumulative_recovered, active_cases
 
-var configCache, dataCache, id, height, width, x, y, yScaleMetric;
+var configCache, dataCache, id, height, width, area_chart_x, y, yScaleMetric;
 var yTicks = 5;
 var opacity = 0.5;
 var margin = {
@@ -123,7 +123,7 @@ var area_chart_addLabels = function addLabels(svg, config, data) {
       xPos = width - bbox.width / 2.25;
       yPos = height * 0.6;
     } else if (label === 'active') {
-      xPos = width - bbox.width / 2.25;
+      xPos = width - bbox.width / 1.6;
       yPos = height * 0.825;
     } else if (label === 'deaths') {
       xPos = width * 0.925;
@@ -132,6 +132,14 @@ var area_chart_addLabels = function addLabels(svg, config, data) {
 
 
     svg.append('text').text(label).attr('class', "".concat(label, " label")).attr('text-anchor', 'end').attr('x', xPos).attr('y', yPos);
+  });
+};
+
+var area_chart_areaGenerator = function areaGenerator(data, x) {
+  return d3["a" /* area */]().x(function (d) {
+    return x(d.date);
+  }).y0(y(0)).y1(function (d) {
+    return y(d.value);
   });
 };
 
@@ -149,14 +157,15 @@ var area_chart_drawData = function drawData(svg, metric, i, data, config) {
     }(d);
   }); // draw area charts
 
-  svg.append('g').attr('class', "area ".concat(metric)).append('path').datum(variable).attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('opacity', 1).attr('fill', config.fill_colours[i]).attr('opacity', opacity).attr('d', d3["a" /* area */]().x(function (d) {
-    return x(d.date);
-  }).y0(y(0)).y1(function (d) {
-    return y(d.value);
-  })); // outline the areas
+  svg.append('g').attr('class', "area ".concat(metric)).append('path').datum(variable).attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('opacity', 1).attr('fill', config.fill_colours[i]).attr('opacity', opacity) // .attr('d', d3.area()
+  // 	.x(d => x(d.date))
+  // 	.y0(y(0))
+  // 	.y1(d => y(d.value))
+  // );
+  .attr('d', area_chart_areaGenerator(variable, area_chart_x)); // outline the areas
 
   svg.append('path').datum(variable).attr('fill', 'none').attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('d', d3["e" /* line */]().x(function (d) {
-    return x(d.date);
+    return area_chart_x(d.date);
   }).y(function (d) {
     return y(d.value);
   }));
@@ -207,7 +216,7 @@ var area_chart_xSetup = function xSetup(data) {
 };
 
 var area_chart_xAxis = function xAxis(g) {
-  g.attr("transform", "translate(0, ".concat(height - margin.bottom, ")")).attr('class', 'x-axis').call(d3["b" /* axisBottom */](x).ticks(5).tickSizeOuter(0).tickFormat(d3["k" /* utcFormat */]('%b')));
+  g.attr("transform", "translate(0, ".concat(height - margin.bottom, ")")).attr('class', 'x-axis').call(d3["b" /* axisBottom */](area_chart_x).ticks(5).tickSizeOuter(0).tickFormat(d3["k" /* utcFormat */]('%b')));
 };
 
 var area_chart_yAxis = function yAxis(g) {
@@ -263,7 +272,7 @@ var area_chart_updateChart = function updateChart(data, config) {
 
   var svg = d3["i" /* select */](id).append('svg').attr('viewBox', [0, 0, width, height]); // Add axes
 
-  x = area_chart_xSetup(data);
+  area_chart_x = area_chart_xSetup(data);
   y = area_chart_ySetup(data);
   svg.append('g').call(area_chart_xAxis);
   svg.append('g').call(area_chart_yAxis);
@@ -329,6 +338,9 @@ var src_init = /*#__PURE__*/function () {
             resp = _context.sent;
             data = resp.data.results.filter(function (d) {
               return d.prov_code === prCode;
+            }).filter(function (d) {
+              var date = d.date_active.split('-');
+              return Date.parse("".concat(date[2], "-").concat(date[1], "-").concat(date[0])) > Date.parse('2020-03-01');
             });
             data_config.timestamp = resp.data.timestamp; // local dev 
 
