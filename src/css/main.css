@@ -55,6 +55,7 @@
 #app .credit {
 	color: var(--grey02);
 	font-size: 0.8rem;
+	padding-right: 5px;
 }
 
 #app .credit {

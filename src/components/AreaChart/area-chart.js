@@ -12,7 +12,7 @@ const yTicks = 5;
 const opacity = 0.5;
 const margin = {
 	top: 10,
-	right: 20,
+	right: 5,
 	bottom: 25,
 	left: 40
 };
