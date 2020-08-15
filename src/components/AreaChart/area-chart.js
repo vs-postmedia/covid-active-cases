@@ -14,7 +14,7 @@ const margin = {
 	top: 10,
 	right: 20,
 	bottom: 25,
-	left: 55
+	left: 40
 };
 
 const addLabels = (svg, config, data) => {
@@ -36,11 +36,11 @@ const addLabels = (svg, config, data) => {
 			xPos = width - (bbox.width / 2.25);
 			yPos = height * 0.6;
 		} else if (label === 'active') {
-			xPos = width - (bbox.width / 1.6);
-			yPos = height * 0.825;
+			xPos = width - (bbox.width / 1.5);
+			yPos = height * 0.725;
 		} else if (label === 'deaths') {
 			xPos = width * 0.925;
-			yPos = height * 0.9;
+			yPos = height * 0.85;
 		}
 
 		// place the text
@@ -89,7 +89,7 @@ const drawData = (svg, metric, i, data, config) => {
 			.x(d => x(d.date))
 			.y(d => y(d.value))
 		);
-	
+
 	// tooltip highlights
 	svg.append('g')
 		.append('circle')
@@ -98,8 +98,6 @@ const drawData = (svg, metric, i, data, config) => {
 		.attr('fill', config.fill_colours[i])
 		.style('display', 'none');
 };
-
-
 
 function handleMouseMove() {
 	const bisectDate = d3.bisector(dataPoint => dataPoint.date).left;
@@ -112,23 +110,27 @@ function handleMouseMove() {
 	const leftData = dataCache[dataIndex - 1];
 	const rightData = dataCache[dataIndex];
 
-	// determine if xPos is closer to the left or right data point
-	const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData;
+	// i dunno, sometimes rightData doesn't work... <shrug>
+	if (!rightData !== 'undefined') {
+		// determine if xPos is closer to the left or right data point
+		const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData;
 
-	d3.select('.highlight-0')
-		.style('display', null)
-		.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_recovered))})`);
+		// because we aren't currently showing recoveries... (there's a better way, I know...)
+		// d3.select('.highlight-0')
+		// 	.style('display', null)
+		// 	.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_recovered))})`);
 
-	d3.select('.highlight-1')
-		.style('display', null)
-		.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.active_cases))})`);
+		d3.select('.highlight-0')
+			.style('display', null)
+			.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.active_cases))})`);
 
-	d3.select('.highlight-2')
-		.style('display', null)
-		.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_deaths))})`);
+		d3.select('.highlight-1')
+			.style('display', null)
+			.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_deaths))})`);
 
-	//
-	showTooltip(dataPoint);
+		//
+		showTooltip(dataPoint);	
+	}
 }
 
 function showTooltip(data) {
@@ -204,11 +206,18 @@ const setupHeader = (config, data) => {
 		.html(subhead);
 };
 
-const setYScaleMetric = data => {
-	const cases = parseInt(data[data.length - 1].active_cases);
-	const recovered = parseInt(data[data.length - 1].cumulative_recovered);
+const setYScaleMetric = (config, data) => {
+	let metric
+	if (config.chart_variables.includes('cumulative_recovered')) {
+		const cases = parseInt(data[data.length - 1].active_cases);
+		const recovered = parseInt(data[data.length - 1].cumulative_recovered);
 
-	return recovered > cases ? 'cumulative_recovered' : 'active_cases';
+		metric = recovered > cases ? 'cumulative_recovered' : 'active_cases';	
+	} else {
+		metric = 'active_cases';
+	}
+
+	return metric;
 }
 
 const ySetup = (data) => {
@@ -259,7 +268,7 @@ const init = async (data, config) => {
 	dataCache = data;
 	configCache = config;
 	// sometimes actives_cases are higher than recovered. Set the yScale metric on the fly
-	yScaleMetric = setYScaleMetric(data);
+	yScaleMetric = setYScaleMetric(config, data);
 
 	// convert dates into something useful
 	await parseDate(data);

@@ -1,5 +1,6 @@
-import css from './tooltip-template.css';
 import * as d3 from 'd3-time-format';
+import css from './tooltip-template.css';
+import helper from '../../js/helper-functions';
 
 const formatTime = d3.timeFormat('%B %d, %Y');
 
@@ -9,7 +10,7 @@ function tooltip(data) {
 			<p class="date">${formatTime(data.date)}</p>
 			<p class="deaths">${data.cumulative_deaths} deaths</p>
 			<p class="active">${data.active_cases} active cases</p>
-			<p class="recovered">${data.cumulative_recovered} recovered</p>
+			<p class="recovered">${helper.numberWithCommas(data.cumulative_recovered)} recovered</p>
 		</div>
 	`;
 
