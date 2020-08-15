@@ -1,0 +1,21 @@
+#app .tooltip-container {
+	background: rgba(255,255,255,0.8);
+	border: 1px solid grey;
+	height: 100px;
+	pointer-events: none;
+	position: absolute;
+	width: 150px;
+}
+#app .tooltip-content {
+	padding: 5px;
+}
+
+#app .tooltip-container .date {
+	color: #898B8E;
+	font-size: 0.9rem;
+	margin-bottom: 7px;
+}
+
+#app .tooltip-container p {
+	margin-bottom: 3px
+}

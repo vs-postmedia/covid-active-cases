@@ -1,6 +1,10 @@
 #app {
-	height: 475px;
 	margin: 0.25rem;
+	min-height: 450px;
+}
+
+#app header {
+	margin-bottom: 10px;
 }
 
 #app .active {
@@ -23,6 +27,11 @@
 	text-transform: capitalize;
 }
 
+#app .overlay {
+    fill: none;
+    pointer-events: all;
+}
+
 #app .tick text {
 	font-size: 0.9rem;
 	font-family: 'BentonSansCond-Regular';
@@ -31,6 +40,12 @@
 #app .tick line,
 #app .gridline .tick line {
 	stroke: var(--grey04);
+}
+
+#app .hover-line {
+	stroke: #6F257F;
+	stroke-width: 2px;
+	stroke-dasharray: 3,3;
 }
 
 #app footer {

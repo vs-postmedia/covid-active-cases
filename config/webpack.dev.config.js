@@ -20,7 +20,7 @@ module.exports = {
 		// This will shows a full-screen overlay in the browser when there are compiler errors
 		host: '0.0.0.0',
 		overlay: true,
-		port: 3000
+		port: 3003
 	},
 	// Development Tools (Map Errors To Source File)
   	devtool: 'source-map',

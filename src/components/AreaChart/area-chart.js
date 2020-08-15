@@ -1,4 +1,6 @@
-	import * as d3 from 'd3';
+import * as d3 from 'd3';
+// import * as d3Selection from 'd3-selection';
+import tooltipTemplate from '../TooltipTemplate/tooltip-template';
 import css from './area-chart.css';
 
 
@@ -75,11 +77,6 @@ const drawData = (svg, metric, i, data, config) => {
 		.attr('opacity', 1)
 		.attr('fill', config.fill_colours[i])
 		.attr('opacity', opacity)
-		// .attr('d', d3.area()
-		// 	.x(d => x(d.date))
-		// 	.y0(y(0))
-		// 	.y1(d => y(d.value))
-		// );
 		.attr('d', areaGenerator(variable, x));
 
 	// outline the areas
@@ -92,7 +89,74 @@ const drawData = (svg, metric, i, data, config) => {
 			.x(d => x(d.date))
 			.y(d => y(d.value))
 		);
+	
+	// tooltip highlights
+	svg.append('g')
+		.append('circle')
+		.attr('class', `highlight highlight-${i}`)
+		.attr('r', 5)
+		.attr('fill', config.fill_colours[i])
+		.style('display', 'none');
 };
+
+
+
+function handleMouseMove() {
+	const bisectDate = d3.bisector(dataPoint => dataPoint.date).left;
+	
+	// get x-value of current mouse position
+	const xValue = x.invert(d3.mouse(this)[0]);
+
+	// Get the index of the xValue relative to the dataSet & the datapoints on the left & right of the index
+	const dataIndex = bisectDate(dataCache, xValue, 1);
+	const leftData = dataCache[dataIndex - 1];
+	const rightData = dataCache[dataIndex];
+
+	// determine if xPos is closer to the left or right data point
+	const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData;
+
+	d3.select('.highlight-0')
+		.style('display', null)
+		.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_recovered))})`);
+
+	d3.select('.highlight-1')
+		.style('display', null)
+		.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.active_cases))})`);
+
+	d3.select('.highlight-2')
+		.style('display', null)
+		.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_deaths))})`);
+
+	//
+	showTooltip(dataPoint);
+}
+
+function showTooltip(data) {
+	const pageXpadding = 15;
+	const content = tooltipTemplate(data);
+
+	const tooltip = d3.select('.tooltip-container')
+		.html(content);
+
+	const width = d3.select('.tooltip-container')
+		.style('width')
+
+	// tooltip left/right of pointer to keep from getting pushed off screen
+	const left = event.pageX > parseInt(width) ? event.pageX - (parseInt(width) + pageXpadding)  : event.pageX + pageXpadding;
+
+	d3.select('.tooltip-container')
+		.style('display', null)
+		.style('top', `${event.pageY - 15}px`)
+		.style('left', `${left}px`);
+}
+
+function handleMouseOut() {
+	d3.selectAll('.highlight')
+		.style('display', 'none');
+
+	d3.select('.tooltip-container')
+		.style('display', 'none');
+}
 
 const parseDate = (data) => {
 	return data.map(d => {
@@ -160,7 +224,7 @@ const xSetup = (data) => {
 };
 
 const xAxis = g => {
-	g.attr("transform", `translate(0, ${height - margin.bottom})`)
+	g.attr('transform', `translate(0, ${height - margin.bottom})`)
 		.attr('class', 'x-axis')
 		.call(d3.axisBottom(x)
 			.ticks(5)
@@ -214,7 +278,11 @@ const updateChart = (data, config) => {
 	// svg
 	const svg = d3.select(id)
 		.append('svg')
-		.attr('viewBox', [0, 0, width, height]);
+		.attr('viewBox', [0, 0, width, height])
+		
+	d3.select('svg')
+		.on('mousemove touchmove', handleMouseMove)
+		.on('mouseout touchend', handleMouseOut);
 
 	// Add axes
 	x = xSetup(data);
@@ -237,6 +305,13 @@ const updateChart = (data, config) => {
 	// add labels
 	addLabels(svg, configCache, data);
 
+	// add tooltip
+	d3.select('#app')
+		.append('div')
+			.attr('class', 'tooltip-container')
+			.style('display', 'none')
+			.style('font', '1rem BentonSans');
+	
 	// don't forget the footer!
 	setupFooter(configCache);
 };
