@@ -1,0 +1,18 @@
+{
+	"id": "#app",
+	"headline": "Recoveries, deaths and active cases of COVID-19",
+	"subhead": "<span class='active'>Active cases</span> of COVID-19 in PROV, as well as <span class='recovered'>recoveries</span> and <span class='deaths'>deaths</span> from the coronavirus. Data is current as of ",
+	"source_text": "COVID-19 Canada Open Data Working Group",
+	"source_url": "https://github.com/ishaberry/Covid19Canada",
+	"credit": "N. Griffiths / Postmedia News",
+	"chart_variables": [
+		"cumulative_recovered",
+		"active_cases",
+		"cumulative_deaths"
+	],
+	"fill_colours": [
+		"#009775",
+		"#0062A3",
+		"#231F20"
+	]
+}
