@@ -13,6 +13,10 @@
 #app {
 	overflow-y: hidden;
 }
+
+#app svg {
+	-webkit-user-select: none;
+}
 /* POSTMEDIA STYLES */
 #app h1 {
 	color: var(--black);
