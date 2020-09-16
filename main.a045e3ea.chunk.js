@@ -79,10 +79,17 @@ var helper = {
 
 
 
-var formatTime = defaultLocale["a" /* timeFormat */]('%B %d, %Y');
+const formatTime = defaultLocale["a" /* timeFormat */]('%B %d, %Y');
 
 function tooltip_template_tooltip(data) {
-  var template = "\n\t\t<div class=\"tooltip-content\">\n\t\t\t<p class=\"date\">".concat(formatTime(data.date), "</p>\n\t\t\t<p class=\"active\">").concat(data.active_cases, " active cases</p>\n\t\t\t<p class=\"recovered\">").concat(helper_functions.numberWithCommas(data.cumulative_recovered), " recovered</p>\n\t\t\t<p class=\"deaths\">").concat(data.cumulative_deaths, " deaths</p>\n\t\t</div>\n\t");
+  const template = `
+		<div class="tooltip-content">
+			<p class="date">${formatTime(data.date)}</p>
+			<p class="active">${helper_functions.numberWithCommas(data.active_cases)} active cases</p>
+			<p class="recovered">${helper_functions.numberWithCommas(data.cumulative_recovered)} recovered</p>
+			<p class="deaths">${helper_functions.numberWithCommas(data.cumulative_deaths)} deaths</p>
+		</div>
+	`;
   return template;
 }
 
