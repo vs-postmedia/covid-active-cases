@@ -8,9 +8,9 @@ function tooltip(data) {
 	const template = `
 		<div class="tooltip-content">
 			<p class="date">${formatTime(data.date)}</p>
-			<p class="active">${data.active_cases} active cases</p>
+			<p class="active">${helper.numberWithCommas(data.active_cases)} active cases</p>
 			<p class="recovered">${helper.numberWithCommas(data.cumulative_recovered)} recovered</p>
-			<p class="deaths">${data.cumulative_deaths} deaths</p>
+			<p class="deaths">${helper.numberWithCommas(data.cumulative_deaths)} deaths</p>
 		</div>
 	`;
 

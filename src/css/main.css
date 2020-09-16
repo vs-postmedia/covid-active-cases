@@ -11,6 +11,8 @@
 
 
 #app {
+	margin: 0 auto;
+	max-width: 750px;
 	overflow-y: hidden;
 }
 
