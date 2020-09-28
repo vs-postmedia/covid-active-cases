@@ -14,7 +14,7 @@ const margin = {
 	top: 10,
 	right: 5,
 	bottom: 25,
-	left: 40
+	left: 45
 };
 
 const addLabels = (svg, config, data) => {
@@ -35,12 +35,15 @@ const addLabels = (svg, config, data) => {
 		if (config.province === 'Quebec' && label === 'active') {
 			xPos = width - (bbox.width / 2.25);
 			yPos = height * 0.6;
+		} else if (config.province === 'British Columbia' && label === 'active') {
+			xPos = width * 0.925;
+			yPos = height * 0.725;
 		} else if (label === 'active') {
 			xPos = width - (bbox.width / 1.5);
 			yPos = height * 0.725;
 		} else if (label === 'deaths') {
 			xPos = width * 0.925;
-			yPos = height * 0.85;
+			yPos = height * 0.87;
 		}
 
 		// place the text
