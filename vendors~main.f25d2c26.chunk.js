@@ -8496,7 +8496,7 @@ function threshold_threshold() {
 }
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/year.js
-var src_year = __webpack_require__(13);
+var src_year = __webpack_require__(12);
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/interval.js
 var src_interval = __webpack_require__(0);
@@ -8519,7 +8519,7 @@ var month_month = Object(src_interval["a" /* default */])(function(date) {
 var months = month_month.range;
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/week.js
-var src_week = __webpack_require__(6);
+var src_week = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/day.js
 var src_day = __webpack_require__(40);
@@ -8607,7 +8607,7 @@ millisecond_millisecond.every = function(k) {
 var milliseconds = millisecond_millisecond.range;
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/src/defaultLocale.js
-var src_defaultLocale = __webpack_require__(8);
+var src_defaultLocale = __webpack_require__(7);
 
 // CONCATENATED MODULE: ./node_modules/d3-scale/src/time.js
 
@@ -8747,7 +8747,7 @@ function calendar(year, month, week, day, hour, minute, second, millisecond, for
 });
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/utcYear.js
-var utcYear = __webpack_require__(14);
+var utcYear = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./node_modules/d3-time/src/utcMonth.js
 
@@ -8767,7 +8767,7 @@ var utcMonth = Object(src_interval["a" /* default */])(function(date) {
 var utcMonths = utcMonth.range;
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/utcWeek.js
-var utcWeek = __webpack_require__(7);
+var utcWeek = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./node_modules/d3-time/src/utcDay.js
 var utcDay = __webpack_require__(41);
@@ -9366,7 +9366,7 @@ function point_y(p) {
 
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/src/index.js
-var src = __webpack_require__(10);
+var src = __webpack_require__(9);
 
 // CONCATENATED MODULE: ./node_modules/d3-voronoi/src/constant.js
 /* harmony default export */ var d3_voronoi_src_constant = (function(x) {
@@ -11367,15 +11367,8 @@ module.exports = {
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(85);
-
-
-/***/ }),
-/* 5 */,
-/* 6 */
+/* 4 */,
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11427,7 +11420,7 @@ var saturdays = saturday.range;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11479,7 +11472,7 @@ var utcSaturdays = utcSaturday.range;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11488,7 +11481,7 @@ var utcSaturdays = utcSaturday.range;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return utcFormat; });
 /* unused harmony export utcParse */
 /* unused harmony export default */
-/* harmony import */ var _locale_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
+/* harmony import */ var _locale_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
 
 
 var locale;
@@ -11519,12 +11512,12 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 9 */,
-/* 10 */
+/* 8 */,
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _defaultLocale_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var _defaultLocale_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _defaultLocale_js__WEBPACK_IMPORTED_MODULE_0__["b"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _defaultLocale_js__WEBPACK_IMPORTED_MODULE_0__["c"]; });
@@ -11536,50 +11529,15 @@ function defaultLocale(definition) {
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports) {
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
+module.exports = __webpack_require__(85);
 
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-module.exports = _asyncToGenerator;
 
 /***/ }),
-/* 12 */,
-/* 13 */
+/* 11 */,
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11614,7 +11572,7 @@ var years = year.range;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11649,21 +11607,21 @@ var utcYears = utcYear.range;
 
 
 /***/ }),
+/* 14 */,
 /* 15 */,
 /* 16 */,
 /* 17 */,
-/* 18 */,
-/* 19 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return formatLocale; });
-/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
 /* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(41);
-/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(40);
-/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
-/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
+/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
+/* harmony import */ var d3_time__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
 
 
 function localDate(d) {
@@ -12319,11 +12277,53 @@ function formatUnixTimestampSeconds(d) {
 
 
 /***/ }),
+/* 19 */,
 /* 20 */,
 /* 21 */,
 /* 22 */,
 /* 23 */,
-/* 24 */,
+/* 24 */
+/***/ (function(module, exports) {
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+module.exports = _asyncToGenerator;
+
+/***/ }),
 /* 25 */,
 /* 26 */,
 /* 27 */,

@@ -21,6 +21,13 @@ module.exports = JSON.parse("{\"timestamp\":\"2020-07-16 20:00 EDT\\n\",\"result
 
 /***/ }),
 
+/***/ 11:
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"id\":\"#app\",\"headline\":\"COVID-19: Active cases and deaths\",\"subhead\":\"<span class='active'>Active cases</span> of COVID-19 in PROV, as well as <span class='deaths'>deaths</span> from the coronavirus. Data is current as of \",\"source_text\":\"COVID-19 Canada Open Data Working Group\",\"source_url\":\"https://github.com/ishaberry/Covid19Canada\",\"credit\":\"N. Griffiths / Postmedia News\",\"chart_variables\":[\"active_cases\",\"cumulative_deaths\"],\"fill_colours\":[\"#0062A3\",\"#231F20\"]}");
+
+/***/ }),
+
 /***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -29,11 +36,11 @@ module.exports = JSON.parse("{\"timestamp\":\"2020-07-16 20:00 EDT\\n\",\"result
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/regenerator/index.js
-var regenerator = __webpack_require__(4);
+var regenerator = __webpack_require__(10);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/asyncToGenerator.js
-var asyncToGenerator = __webpack_require__(11);
+var asyncToGenerator = __webpack_require__(24);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator);
 
 // EXTERNAL MODULE: ./src/css/normalize.css
@@ -53,13 +60,13 @@ var axios = __webpack_require__(39);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // EXTERNAL MODULE: ./src/data/config.json
-var data_config = __webpack_require__(12);
+var data_config = __webpack_require__(11);
 
 // EXTERNAL MODULE: ./node_modules/d3/index.js + 279 modules
 var d3 = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./node_modules/d3-time-format/src/defaultLocale.js
-var defaultLocale = __webpack_require__(8);
+var defaultLocale = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./src/components/TooltipTemplate/tooltip-template.css
 var tooltip_template = __webpack_require__(107);
@@ -99,119 +106,109 @@ function tooltip_template_tooltip(data) {
 var area_chart = __webpack_require__(108);
 
 // CONCATENATED MODULE: ./src/components/AreaChart/area-chart.js
-
-
  // import * as d3Selection from 'd3-selection';
 
 
  // THE GOOD STUFF
 // const yScaleMetric = 'active_cases'; // cumulative_cases, cumulative_recovered, active_cases
 
-var configCache, dataCache, id, height, area_chart_width, area_chart_x, y, yScaleMetric;
-var yTicks = 5;
-var opacity = 0.5;
-var margin = {
+let configCache, dataCache, id, height, area_chart_width, area_chart_x, y, yScaleMetric;
+const yTicks = 5;
+const opacity = 0.5;
+const margin = {
   top: 10,
   right: 5,
   bottom: 25,
-  left: 40
+  left: 45
 };
 
-var area_chart_addLabels = function addLabels(svg, config, data) {
-  config.chart_variables.forEach(function (d) {
+const addLabels = (svg, config, data) => {
+  config.chart_variables.forEach(d => {
     // not every province had deaths
     if (data[data.length - 1].cumulative_deaths < 1 && d === 'cumulative_deaths') {
       return;
     } // get the bounding box for the area charts to position the labels 
 
 
-    var bbox = d3["k" /* select */](".".concat(d, " path")).node().getBBox();
-    var xPos = area_chart_width * 0.925;
-    var yPos = height - bbox.height / 1.75;
-    var label = d.replace('cumulative_', '').replace('_cases', ''); // magical repositioning so the labels fit somewhat well...
+    const bbox = d3["k" /* select */](`.${d} path`).node().getBBox();
+    let xPos = area_chart_width * 0.925;
+    let yPos = height - bbox.height / 1.75;
+    const label = d.replace('cumulative_', '').replace('_cases', ''); // magical repositioning so the labels fit somewhat well...
 
     if (config.province === 'Quebec' && label === 'active') {
       xPos = area_chart_width - bbox.width / 2.25;
       yPos = height * 0.6;
+    } else if (config.province === 'British Columbia' && label === 'active') {
+      xPos = area_chart_width * 0.925;
+      yPos = height * 0.725;
     } else if (label === 'active') {
       xPos = area_chart_width - bbox.width / 1.5;
       yPos = height * 0.725;
     } else if (label === 'deaths') {
       xPos = area_chart_width * 0.925;
-      yPos = height * 0.85;
+      yPos = height * 0.87;
     } // place the text
 
 
-    svg.append('text').text(label).attr('class', "".concat(label, " label")).attr('text-anchor', 'end').attr('x', xPos).attr('y', yPos);
+    svg.append('text').text(label).attr('class', `${label} label`).attr('text-anchor', 'end').attr('x', xPos).attr('y', yPos);
   });
 };
 
-var area_chart_areaGenerator = function areaGenerator(data, x) {
-  return d3["a" /* area */]().x(function (d) {
-    return x(d.date);
-  }).y0(y(0)).y1(function (d) {
-    return y(d.value);
-  });
+const areaGenerator = (data, x) => {
+  return d3["a" /* area */]().x(d => x(d.date)).y0(y(0)).y1(d => y(d.value));
 };
 
-var area_chart_drawData = function drawData(svg, metric, i, data, config) {
+const drawData = (svg, metric, i, data, config) => {
   // prep variables for d3.area
-  var variable = data.map(function (d) {
+  const variable = data.map(d => {
     d.value = parseInt(d[metric]);
-    return function (_ref) {
-      var date = _ref.date,
-          value = _ref.value;
-      return {
-        date: date,
-        value: value
-      };
-    }(d);
+    return (({
+      date,
+      value
+    }) => ({
+      date,
+      value
+    }))(d);
   }); // draw area charts
 
-  svg.append('g').attr('class', "area ".concat(metric)).append('path').datum(variable).attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('opacity', 1).attr('fill', config.fill_colours[i]).attr('opacity', opacity).attr('d', area_chart_areaGenerator(variable, area_chart_x)); // outline the areas
+  svg.append('g').attr('class', `area ${metric}`).append('path').datum(variable).attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('opacity', 1).attr('fill', config.fill_colours[i]).attr('opacity', opacity).attr('d', areaGenerator(variable, area_chart_x)); // outline the areas
 
-  svg.append('path').datum(variable).attr('fill', 'none').attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('d', d3["f" /* line */]().x(function (d) {
-    return area_chart_x(d.date);
-  }).y(function (d) {
-    return y(d.value);
-  })); // tooltip highlights
+  svg.append('path').datum(variable).attr('fill', 'none').attr('stroke', config.fill_colours[i]).attr('stroke-width', 2).attr('d', d3["f" /* line */]().x(d => area_chart_x(d.date)).y(d => y(d.value))); // tooltip highlights
 
-  svg.append('g').append('circle').attr('class', "highlight highlight-".concat(i)).attr('r', 5).attr('fill', config.fill_colours[i]).style('display', 'none');
+  svg.append('g').append('circle').attr('class', `highlight highlight-${i}`).attr('r', 5).attr('fill', config.fill_colours[i]).style('display', 'none');
 };
 
 function handleMouseMove() {
-  var bisectDate = d3["d" /* bisector */](function (dataPoint) {
-    return dataPoint.date;
-  }).left; // get x-value of current mouse position
+  const bisectDate = d3["d" /* bisector */](dataPoint => dataPoint.date).left; // get x-value of current mouse position
 
-  var xValue = area_chart_x.invert(d3["h" /* mouse */](this)[0]); // Get the index of the xValue relative to the dataSet & the datapoints on the left & right of the index
+  const xValue = area_chart_x.invert(d3["h" /* mouse */](this)[0]); // Get the index of the xValue relative to the dataSet & the datapoints on the left & right of the index
 
-  var dataIndex = bisectDate(dataCache, xValue, 1);
-  var leftData = dataCache[dataIndex - 1];
-  var rightData = dataCache[dataIndex]; // i dunno, sometimes rightData doesn't work... <shrug>
+  const dataIndex = bisectDate(dataCache, xValue, 1);
+  const leftData = dataCache[dataIndex - 1];
+  const rightData = dataCache[dataIndex]; // i dunno, sometimes rightData doesn't work... <shrug>
 
   if (!rightData !== 'undefined') {
     // determine if xPos is closer to the left or right data point
-    var dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData; // because we aren't currently showing recoveries... (there's a better way, I know...)
+    const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData; // because we aren't currently showing recoveries... (there's a better way, I know...)
     // d3.select('.highlight-0')
     // 	.style('display', null)
     // 	.attr('transform', `translate(${x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_recovered))})`);
 
-    d3["k" /* select */]('.highlight-0').style('display', null).attr('transform', "translate(".concat(area_chart_x(dataPoint.date), ", ").concat(y(parseInt(dataPoint.active_cases)), ")"));
-    d3["k" /* select */]('.highlight-1').style('display', null).attr('transform', "translate(".concat(area_chart_x(dataPoint.date), ", ").concat(y(parseInt(dataPoint.cumulative_deaths)), ")")); //
+    d3["k" /* select */]('.highlight-0').style('display', null).attr('transform', `translate(${area_chart_x(dataPoint.date)}, ${y(parseInt(dataPoint.active_cases))})`);
+    d3["k" /* select */]('.highlight-1').style('display', null).attr('transform', `translate(${area_chart_x(dataPoint.date)}, ${y(parseInt(dataPoint.cumulative_deaths))})`); //
 
     showTooltip(dataPoint);
   }
 }
 
 function showTooltip(data) {
-  var pageXpadding = 15;
-  var content = TooltipTemplate_tooltip_template(data);
-  var tooltip = d3["k" /* select */]('.tooltip-container').html(content);
-  var width = d3["k" /* select */]('.tooltip-container').style('width'); // tooltip left/right of pointer to keep from getting pushed off screen
+  const pageXpadding = 15;
+  const content = TooltipTemplate_tooltip_template(data);
+  const tooltip = d3["k" /* select */]('.tooltip-container').html(content);
+  const width = d3["k" /* select */]('.tooltip-container').style('width'); // tooltip left/right of pointer to keep from getting pushed off screen
 
-  var left = event.pageX > parseInt(width) ? event.pageX - (parseInt(width) + pageXpadding) : event.pageX + pageXpadding;
-  d3["k" /* select */]('.tooltip-container').style('display', null).style('top', "".concat(event.pageY - 15, "px")).style('left', "".concat(left, "px"));
+  const left = event.pageX > parseInt(width) ? event.pageX - (parseInt(width) + pageXpadding) : event.pageX + pageXpadding;
+  d3["k" /* select */]('.tooltip-container').style('display', null).style('top', `${event.pageY - 15}px`).style('left', `${left}px`);
 }
 
 function handleMouseOut() {
@@ -219,38 +216,38 @@ function handleMouseOut() {
   d3["k" /* select */]('.tooltip-container').style('display', 'none');
 }
 
-var area_chart_parseDate = function parseDate(data) {
-  return data.map(function (d) {
+const parseDate = data => {
+  return data.map(d => {
     d.date = d3["m" /* timeParse */]('%d-%m-%Y')(d.date_active);
   });
 };
 
-var area_chart_setupFooter = function setupFooter(config) {
-  var footer = d3["k" /* select */](config.id).append('footer');
+const setupFooter = config => {
+  const footer = d3["k" /* select */](config.id).append('footer');
   footer.append('p').attr('class', 'source').text('SOURCE: ').append('a').attr('href', config.source_url).attr('target', '_blank').text(config.source_text);
   footer.append('p').attr('class', 'credit').text(config.credit);
 };
 
-var area_chart_setupHeader = function setupHeader(config, data) {
+const setupHeader = (config, data) => {
   // inset province name into deck
-  var subhead = config.subhead.replace('PROV', data[0].province);
-  var d = config.timestamp.split(' ')[0].split('-');
-  var date = new Date(d[0], d[1] - 1, d[2]);
-  var dateString = " ".concat(date.toLocaleString('default', {
+  let subhead = config.subhead.replace('PROV', data[0].province);
+  const d = config.timestamp.split(' ')[0].split('-');
+  const date = new Date(d[0], d[1] - 1, d[2]);
+  const dateString = ` ${date.toLocaleString('default', {
     month: 'long'
-  }), " ").concat(d[2], ", ").concat(date.getFullYear(), "."); // add timestamp to deck
+  })} ${d[2]}, ${date.getFullYear()}.`; // add timestamp to deck
 
   subhead += dateString;
   d3["k" /* select */](config.id).append('header').append('h1').attr('class', 'headline').text(config.headline);
-  d3["k" /* select */]("".concat(config.id, " header")).append('p').attr('class', 'subhead').html(subhead);
+  d3["k" /* select */](`${config.id} header`).append('p').attr('class', 'subhead').html(subhead);
 };
 
-var setYScaleMetric = function setYScaleMetric(config, data) {
-  var metric;
+const setYScaleMetric = (config, data) => {
+  let metric;
 
   if (config.chart_variables.includes('cumulative_recovered')) {
-    var cases = parseInt(data[data.length - 1].active_cases);
-    var recovered = parseInt(data[data.length - 1].cumulative_recovered);
+    const cases = parseInt(data[data.length - 1].active_cases);
+    const recovered = parseInt(data[data.length - 1].cumulative_recovered);
     metric = recovered > cases ? 'cumulative_recovered' : 'active_cases';
   } else {
     metric = 'active_cases';
@@ -259,99 +256,71 @@ var setYScaleMetric = function setYScaleMetric(config, data) {
   return metric;
 };
 
-var area_chart_ySetup = function ySetup(data) {
-  return d3["i" /* scaleLinear */]().domain([0, d3["g" /* max */](data, function (d) {
-    return parseInt(d[yScaleMetric]);
-  })]).nice().range([height - margin.bottom, margin.top]);
+const ySetup = data => {
+  return d3["i" /* scaleLinear */]().domain([0, d3["g" /* max */](data, d => parseInt(d[yScaleMetric]))]).nice().range([height - margin.bottom, margin.top]);
 };
 
-var area_chart_xSetup = function xSetup(data) {
-  return d3["j" /* scaleUtc */]().domain(d3["e" /* extent */](data, function (d) {
-    return d.date;
-  })).range([margin.left, area_chart_width - margin.right]);
+const xSetup = data => {
+  return d3["j" /* scaleUtc */]().domain(d3["e" /* extent */](data, d => d.date)).range([margin.left, area_chart_width - margin.right]);
 };
 
-var area_chart_xAxis = function xAxis(g) {
-  g.attr('transform', "translate(0, ".concat(height - margin.bottom, ")")).attr('class', 'x-axis').call(d3["b" /* axisBottom */](area_chart_x).ticks(5).tickSizeOuter(0).tickFormat(d3["n" /* utcFormat */]('%b')));
+const xAxis = g => {
+  g.attr('transform', `translate(0, ${height - margin.bottom})`).attr('class', 'x-axis').call(d3["b" /* axisBottom */](area_chart_x).ticks(5).tickSizeOuter(0).tickFormat(d3["n" /* utcFormat */]('%b')));
 };
 
-var area_chart_yAxis = function yAxis(g) {
-  g.attr("transform", "translate(".concat(margin.left, ",0)")).attr('class', 'y-axis').call(d3["c" /* axisLeft */](y).ticks(yTicks)).call(function (g) {
-    return g.select(".domain").remove();
-  }); // removed the line
+const yAxis = g => {
+  g.attr("transform", `translate(${margin.left},0)`).attr('class', 'y-axis').call(d3["c" /* axisLeft */](y).ticks(yTicks)).call(g => g.select(".domain").remove()); // removed the line
 };
 
-var area_chart_yAxisGridlines = function yAxisGridlines(g) {
-  g.attr("transform", "translate(".concat(margin.left, ",0)")).attr('class', 'gridline').call(d3["c" /* axisLeft */](y).ticks(yTicks).tickSize(-area_chart_width + margin.left + margin.right).tickFormat('')).call(function (g) {
-    return g.select(".domain").remove();
-  }); // removed the line
+const yAxisGridlines = g => {
+  g.attr("transform", `translate(${margin.left},0)`).attr('class', 'gridline').call(d3["c" /* axisLeft */](y).ticks(yTicks).tickSize(-area_chart_width + margin.left + margin.right).tickFormat('')).call(g => g.select(".domain").remove()); // removed the line
 };
 
-var init = /*#__PURE__*/function () {
-  var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(data, config) {
-    return regenerator_default.a.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            // setup
-            id = config.id;
-            dataCache = data;
-            configCache = config; // sometimes actives_cases are higher than recovered. Set the yScale metric on the fly
+const init = async (data, config) => {
+  // setup
+  id = config.id;
+  dataCache = data;
+  configCache = config; // sometimes actives_cases are higher than recovered. Set the yScale metric on the fly
 
-            yScaleMetric = setYScaleMetric(config, data); // convert dates into something useful
+  yScaleMetric = setYScaleMetric(config, data); // convert dates into something useful
 
-            _context.next = 6;
-            return area_chart_parseDate(data);
+  await parseDate(data);
+  updateChart(data, config);
+};
 
-          case 6:
-            area_chart_updateChart(data, config);
-
-          case 7:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function init(_x, _x2) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-var area_chart_updateChart = function updateChart(data, config) {
+const updateChart = (data, config) => {
   // headline & deck
-  area_chart_setupHeader(config, data); // set height & width
+  setupHeader(config, data); // set height & width
 
   height = d3["k" /* select */](id).style('height').slice(0, -2) / 1.6 - margin.top - margin.bottom;
   area_chart_width = d3["k" /* select */](id).style('width').slice(0, -2); // svg
 
-  var svg = d3["k" /* select */](id).append('svg').attr('viewBox', [0, 0, area_chart_width, height]);
+  const svg = d3["k" /* select */](id).append('svg').attr('viewBox', [0, 0, area_chart_width, height]);
   d3["k" /* select */]('svg').on('mousemove touchmove', handleMouseMove).on('mouseout touchend', handleMouseOut); // Add axes
 
-  area_chart_x = area_chart_xSetup(data);
-  y = area_chart_ySetup(data);
-  svg.append('g').call(area_chart_xAxis);
-  svg.append('g').call(area_chart_yAxis);
-  svg.append('g').call(area_chart_yAxisGridlines); // draw data area 
+  area_chart_x = xSetup(data);
+  y = ySetup(data);
+  svg.append('g').call(xAxis);
+  svg.append('g').call(yAxis);
+  svg.append('g').call(yAxisGridlines); // draw data area 
 
-  config.chart_variables.forEach(function (metric, i) {
-    area_chart_drawData(svg, metric, i, data, config);
+  config.chart_variables.forEach((metric, i) => {
+    drawData(svg, metric, i, data, config);
   }); // add labels
 
-  area_chart_addLabels(svg, configCache, data); // add tooltip
+  addLabels(svg, configCache, data); // add tooltip
 
   d3["k" /* select */]('#app').append('div').attr('class', 'tooltip-container').style('display', 'none').style('font', '1rem BentonSans'); // don't forget the footer!
 
-  area_chart_setupFooter(configCache);
+  setupFooter(configCache);
 };
 
-window.addEventListener('resize', function () {
-  var el = document.getElementById(id.replace('#', ''));
+window.addEventListener('resize', () => {
+  const el = document.getElementById(id.replace('#', ''));
 
   if (el !== null) {
     el.innerHTML = '';
-    area_chart_updateChart(dataCache, configCache);
+    updateChart(dataCache, configCache);
   }
 });
 
@@ -469,13 +438,6 @@ var prepData = /*#__PURE__*/function () {
 }();
 
 src_init();
-
-/***/ }),
-
-/***/ 12:
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"id\":\"#app\",\"headline\":\"COVID-19: Active cases and deaths\",\"subhead\":\"<span class='active'>Active cases</span> of COVID-19 in PROV, as well as <span class='deaths'>deaths</span> from the coronavirus. Data is current as of \",\"source_text\":\"COVID-19 Canada Open Data Working Group\",\"source_url\":\"https://github.com/ishaberry/Covid19Canada\",\"credit\":\"N. Griffiths / Postmedia News\",\"chart_variables\":[\"active_cases\",\"cumulative_deaths\"],\"fill_colours\":[\"#0062A3\",\"#231F20\"]}");
 
 /***/ }),
 
