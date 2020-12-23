@@ -14,7 +14,7 @@ const margin = {
 	top: 10,
 	right: 5,
 	bottom: 25,
-	left: 45
+	left: 50
 };
 
 const addLabels = (svg, config, data) => {
@@ -36,14 +36,14 @@ const addLabels = (svg, config, data) => {
 			xPos = width - (bbox.width / 2.25);
 			yPos = height * 0.6;
 		} else if (config.province === 'British Columbia' && label === 'active') {
-			xPos = width * 0.925;
+			xPos = width * 0.95;
 			yPos = height * 0.725;
 		} else if (label === 'active') {
 			xPos = width - (bbox.width / 1.5);
 			yPos = height * 0.725;
 		} else if (label === 'deaths') {
-			xPos = width * 0.925;
-			yPos = height * 0.87;
+			xPos = width * 0.95;
+			yPos = height * 0.9;
 		}
 
 		// place the text
@@ -114,7 +114,7 @@ function handleMouseMove() {
 	const rightData = dataCache[dataIndex];
 
 	// i dunno, sometimes rightData doesn't work... <shrug>
-	if (!rightData !== 'undefined') {
+	if (!rightData !== deaths) {
 		// determine if xPos is closer to the left or right data point
 		const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData;
 
