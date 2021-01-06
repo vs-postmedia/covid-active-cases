@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.10.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "d3": "^5.15.0",
     "d3-selection": "^1.4.2",
     "d3-svg-annotation": "^2.5.1",
