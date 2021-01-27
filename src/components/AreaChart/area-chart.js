@@ -14,7 +14,7 @@ const margin = {
 	top: 10,
 	right: 5,
 	bottom: 25,
-	left: 50
+	left: 55
 };
 
 const addLabels = (svg, config, data) => {
