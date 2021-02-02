@@ -24,7 +24,7 @@ module.exports = JSON.parse("{\"timestamp\":\"2020-07-16 20:00 EDT\\n\",\"result
 /***/ 11:
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"id\":\"#app\",\"headline\":\"COVID-19: Active cases and deaths\",\"subhead\":\"<span class='active'>Active cases</span> of COVID-19 in PROV, as well as <span class='deaths'>deaths</span> from the coronavirus. Data is current as of \",\"source_text\":\"COVID-19 Canada Open Data Working Group\",\"source_url\":\"https://github.com/ishaberry/Covid19Canada\",\"credit\":\"N. Griffiths / Postmedia News\",\"chart_variables\":[\"active_cases\",\"cumulative_deaths\"],\"fill_colours\":[\"#0062A3\",\"#231F20\"]}");
+module.exports = JSON.parse("{\"id\":\"#app\",\"headline\":\"COVID-19: Active cases and deaths\",\"subhead\":\"<span class='active'>Active cases</span> of COVID-19 in PROV, as well as total <span class='deaths'>deaths</span> from the coronavirus. Data is current as of \",\"source_text\":\"COVID-19 Canada Open Data Working Group\",\"source_url\":\"https://github.com/ishaberry/Covid19Canada\",\"credit\":\"N. Griffiths / Postmedia News\",\"chart_variables\":[\"active_cases\",\"cumulative_deaths\"],\"fill_colours\":[\"#0062A3\",\"#231F20\"]}");
 
 /***/ }),
 
@@ -86,17 +86,10 @@ var helper = {
 
 
 
-const formatTime = defaultLocale["a" /* timeFormat */]('%B %d, %Y');
+var formatTime = defaultLocale["a" /* timeFormat */]('%B %d, %Y');
 
 function tooltip_template_tooltip(data) {
-  const template = `
-		<div class="tooltip-content">
-			<p class="date">${formatTime(data.date)}</p>
-			<p class="active">${helper_functions.numberWithCommas(data.active_cases)} active cases</p>
-			<p class="recovered">${helper_functions.numberWithCommas(data.cumulative_recovered)} recovered</p>
-			<p class="deaths">${helper_functions.numberWithCommas(data.cumulative_deaths)} deaths</p>
-		</div>
-	`;
+  var template = "\n\t\t<div class=\"tooltip-content\">\n\t\t\t<p class=\"date\">".concat(formatTime(data.date), "</p>\n\t\t\t<p class=\"active\">").concat(helper_functions.numberWithCommas(data.active_cases), " active cases</p>\n\t\t\t<p class=\"recovered\">").concat(helper_functions.numberWithCommas(data.cumulative_recovered), " recovered</p>\n\t\t\t<p class=\"deaths\">").concat(helper_functions.numberWithCommas(data.cumulative_deaths), " deaths</p>\n\t\t</div>\n\t");
   return template;
 }
 
@@ -106,11 +99,9 @@ function tooltip_template_tooltip(data) {
 var area_chart = __webpack_require__(108);
 
 // CONCATENATED MODULE: ./src/components/AreaChart/area-chart.js
- // import * as d3Selection from 'd3-selection';
 
 
  // THE GOOD STUFF
-// const yScaleMetric = 'active_cases'; // cumulative_cases, cumulative_recovered, active_cases
 
 let configCache, dataCache, id, height, area_chart_width, area_chart_x, y, yScaleMetric;
 const yTicks = 5;
@@ -119,7 +110,7 @@ const margin = {
   top: 10,
   right: 5,
   bottom: 25,
-  left: 45
+  left: 55
 };
 
 const addLabels = (svg, config, data) => {
@@ -139,14 +130,14 @@ const addLabels = (svg, config, data) => {
       xPos = area_chart_width - bbox.width / 2.25;
       yPos = height * 0.6;
     } else if (config.province === 'British Columbia' && label === 'active') {
-      xPos = area_chart_width * 0.925;
+      xPos = area_chart_width * 0.95;
       yPos = height * 0.725;
     } else if (label === 'active') {
       xPos = area_chart_width - bbox.width / 1.5;
       yPos = height * 0.725;
     } else if (label === 'deaths') {
-      xPos = area_chart_width * 0.925;
-      yPos = height * 0.87;
+      xPos = area_chart_width * 0.95;
+      yPos = height * 0.9;
     } // place the text
 
 
@@ -187,7 +178,7 @@ function handleMouseMove() {
   const leftData = dataCache[dataIndex - 1];
   const rightData = dataCache[dataIndex]; // i dunno, sometimes rightData doesn't work... <shrug>
 
-  if (!rightData !== 'undefined') {
+  if (!rightData !== deaths) {
     // determine if xPos is closer to the left or right data point
     const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData; // because we aren't currently showing recoveries... (there's a better way, I know...)
     // d3.select('.highlight-0')
