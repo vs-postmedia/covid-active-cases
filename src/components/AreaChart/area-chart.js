@@ -1,12 +1,10 @@
 import * as d3 from 'd3';
-// import * as d3Selection from 'd3-selection';
 import tooltipTemplate from '../TooltipTemplate/tooltip-template';
 import css from './area-chart.css';
 
 
 
 // THE GOOD STUFF
-// const yScaleMetric = 'active_cases'; // cumulative_cases, cumulative_recovered, active_cases
 let configCache, dataCache, id, height, width, x, y, yScaleMetric;
 const yTicks = 5;
 const opacity = 0.5;
