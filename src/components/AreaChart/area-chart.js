@@ -12,7 +12,7 @@ const margin = {
 	top: 10,
 	right: 5,
 	bottom: 25,
-	left: 55
+	left: 50
 };
 
 const addLabels = (svg, config, data) => {
@@ -112,7 +112,7 @@ function handleMouseMove() {
 	const rightData = dataCache[dataIndex];
 
 	// i dunno, sometimes rightData doesn't work... <shrug>
-	if (!rightData !== deaths) {
+	if (rightData) {
 		// determine if xPos is closer to the left or right data point
 		const dataPoint = xValue - leftData.date > rightData.date - xValue ? leftData : rightData;
 
